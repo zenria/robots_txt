@@ -112,6 +112,16 @@ impl<'a> Robots<'a> {
         }
         &self.default_section
     }
+
+    /// Clone this Robots<'a> into a Robots<'static> thus it can be used in future api that requires
+    /// a static lifetime.
+    pub fn clone_to_static(&self) -> Robots<'static> {
+        Robots {
+            sections: self.sections.iter().map(|s| s.clone_to_static()).collect(),
+            default_section: self.default_section.clone_to_static(),
+            host: self.host.clone().map(|h| h.into_owned().into()),
+        }
+    }
 }
 
 struct Constructor<'a> {

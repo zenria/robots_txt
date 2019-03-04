@@ -117,6 +117,24 @@ impl<'a> Section<'a> {
             self.sitemaps.insert(url);
         })
     }
+
+    pub fn clone_to_static(&self) -> Section<'static> {
+        Section {
+            rules: self
+                .rules
+                .iter()
+                .map(|rule| rule.clone_to_static())
+                .collect(),
+            sitemaps: self.sitemaps.clone(),
+            crawl_delay: self.crawl_delay.clone(),
+            req_rate: self.req_rate.clone(),
+            useragents: self
+                .useragents
+                .iter()
+                .map(|ua| ua.clone().into_owned().into())
+                .collect(),
+        }
+    }
 }
 
 #[cfg(test)]

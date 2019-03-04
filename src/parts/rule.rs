@@ -30,6 +30,13 @@ impl<'a> Rule<'a> {
     {
         Rule::new(false, path)
     }
+
+    pub fn clone_to_static(&self) -> Rule<'static> {
+        Rule {
+            allow: self.allow,
+            path: self.path.clone().into_owned().into(),
+        }
+    }
 }
 
 impl<'a> Render for Rule<'a> {
